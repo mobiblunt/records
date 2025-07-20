@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DashController;
+use App\Http\Controllers\ReturnVisitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,15 +36,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/field_reports', [DashController::class, 'field'])->name('field_reports');
+    
     Route::get('/field-records', [DashController::class, 'field'])->name('field-records');
     Route::get('/field_reports/create', [DashController::class, 'create'])->name('field-records.create');
     Route::post('/field-records', [DashController::class, 'store'])->name('field-records.store');
+    Route::get('/field-records/{id}/edit', [DashController::class, 'edit'])->name('field-records.edit');
+    Route::put('/field-records/{id}', [DashController::class, 'update'])->name('field-records.update');
+    Route::delete('/field-records/{id}', [DashController::class, 'destroy'])->name('field-records.destroy');
     
     Route::get('/bible_studies', [DashController::class, 'bibleStudies'])->name('bible_studies');
     Route::get('/bible_students', [DashController::class, 'bibleStudents'])->name('bible_students');
     Route::get('/return_visits', [DashController::class, 'returnVisits'])->name('return_visits');
     Route::get('/reports', [DashController::class, 'reports'])->name('reports');
+
+    Route::get('/return-visits', [ReturnVisitController::class, 'index'])->name('return-visits.index');
+    Route::get('/return-visits/create', [ReturnVisitController::class, 'create'])->name('return-visits.create');
+    Route::post('/return-visits', [ReturnVisitController::class, 'store'])->name('return-visits.store');
+    Route::get('/return-visits/{id}/edit', [ReturnVisitController::class, 'edit'])->name('return-visits.edit');
+    Route::put('/return-visits/{id}', [ReturnVisitController::class, 'update'])->name('return-visits.update');
+    Route::delete('/return-visits/{id}', [ReturnVisitController::class, 'destroy'])->name('return-visits.destroy');
 });
 
 require __DIR__.'/auth.php';

@@ -31,4 +31,29 @@ class DashController extends Controller
         FieldRecord::create($validated);
         return redirect()->route('field-records')->with('success', 'Field record created successfully.');
     }
+
+    public function edit($id) {
+        $fieldRecord = FieldRecord::where('user_id', Auth::id())->findOrFail($id);
+        return Inertia::render('FieldRecords/Edit', [
+            'fieldRecord' => $fieldRecord
+        ]);
+    }
+
+    public function update(Request $request, $id) {
+        $fieldRecord = FieldRecord::where('user_id', Auth::id())->findOrFail($id);
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'hours' => 'required|integer',
+            'bible_studies' => 'nullable|integer',
+            'placements' => 'nullable|string',
+        ]);
+        $fieldRecord->update($validated);
+        return redirect()->route('field-records')->with('success', 'Field record updated successfully.');
+    }
+
+    public function destroy($id) {
+        $fieldRecord = FieldRecord::where('user_id', Auth::id())->findOrFail($id);
+        $fieldRecord->delete();
+        return redirect()->route('field-records')->with('success', 'Field record deleted successfully.');
+    }
 }

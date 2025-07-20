@@ -4,6 +4,8 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -24,10 +26,10 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
-                                <NavLink href={route('field_reports')} active={route().current('field_reports')}>
+                                <NavLink href={route('field-records')} active={route().current('field-records')}>
                                     Field Reports
                                 </NavLink>
-                                <NavLink href={route('return_visits')} active={route().current('return_visits')}>
+                                <NavLink href={route('return-visits.index')} active={route().current('return-visits.index')}>
                                     Return Visits
                                 </NavLink>
                                 <NavLink href={route('bible_studies')} active={route().current('bible_studies')}>
@@ -132,6 +134,7 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             <main>{children}</main>
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 }
