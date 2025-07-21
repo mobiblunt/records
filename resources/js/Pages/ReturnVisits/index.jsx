@@ -19,24 +19,24 @@ const index = ({ returnVisits, auth }) => {
                 <Head title="My Return Visits" />
                 <div className="p-6">
                                 <div className="flex justify-between items-center mb-4">
-                                    <h1 className="text-2xl font-bold">My Return Visits</h1>
-                                    <Link href={route('return-visits.create')} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ New Return Visit</Link>
+                                    <h1 className="text-2xl font-bold"></h1>
+                                    <Link href={route('return-visits.create')} className="btn btn-success px-4 py-2 rounded ">+ New Return Visit</Link>
                                 </div>
-                                <table className="min-w-full bg-white border border-gray-200">
+                                <table className="table table-xs min-w-full bg-white border border-gray-200">
                                     <thead>
                                         <tr>
-                                            <th className="py-2 px-4 border-b">Name</th>
-                                            <th className="py-2 px-4 border-b">Address</th>
-                                            <th className="py-2 px-4 border-b">Mobile</th>
-                                            <th className="py-2 px-4 border-b">Placement</th>
-                                            <th className="py-2 px-4 border-b">Last Visit</th>
-                                            <th className="py-2 px-4 border-b">Next Visit</th>
-                                            <th className="py-2 px-4 border-b">Visit Count</th>
-                                            <th className="py-2 px-4 border-b">Preferred Days</th>
-                                            <th className="py-2 px-4 border-b">Status</th>
-                                            <th className="py-2 px-4 border-b">Active</th>
-                                            <th className="py-2 px-4 border-b">Notes</th>
-                                            <th className="py-2 px-4 border-b text-right">Actions</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Name</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Address</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Mobile</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Placement</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Last Visit</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Next Visit</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Visit Count</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Preferred Days</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Status</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Active</th>
+                                            <th className="text-red-600 py-2 px-4 border-b">Notes</th>
+                                            <th className="text-red-600 py-2 px-4 border-b text-right">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -59,7 +59,7 @@ const index = ({ returnVisits, auth }) => {
                                                     <td className="py-2 px-4 border-b">{visit.is_active ? 'Yes' : 'No'}</td>
                                                     <td className="py-2 px-4 border-b">{visit.notes ?? '-'}</td>
                                                     <td className="py-2 px-4 border-b text-right">
-                                                        <Link href={route('return-visits.edit', visit.id)} className="text-blue-600 hover:underline mr-2">Edit</Link>
+                                                        <Link href={route('return-visits.edit', visit.id)} className="btn btn-outline btn-primary mr-2">Edit</Link>
                                                         <button
                                                             type="button"
                                                             onClick={() => {
@@ -67,7 +67,7 @@ const index = ({ returnVisits, auth }) => {
                                                                     router.delete(route('return-visits.destroy', visit.id));
                                                                 }
                                                             }}
-                                                            className="text-red-600 hover:underline"
+                                                            className="btn btn-outline btn-error"
                                                         >
                                                             Delete
                                                         </button>

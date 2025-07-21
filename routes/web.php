@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DashController;
 use App\Http\Controllers\ReturnVisitController;
+use App\Http\Controllers\BibleStudentController;
+use App\Http\Controllers\BibleStudyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +57,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/return-visits/{id}/edit', [ReturnVisitController::class, 'edit'])->name('return-visits.edit');
     Route::put('/return-visits/{id}', [ReturnVisitController::class, 'update'])->name('return-visits.update');
     Route::delete('/return-visits/{id}', [ReturnVisitController::class, 'destroy'])->name('return-visits.destroy');
+
+    Route::get('/bible-students', [BibleStudentController::class, 'index'])->name('bible-students.index');
+    Route::get('/bible-students/create', [BibleStudentController::class, 'create'])->name('bible-students.create');
+    Route::post('/bible-students', [BibleStudentController::class, 'store'])->name('bible-students.store');
+    Route::get('/bible-students/{id}/edit', [BibleStudentController::class, 'edit'])->name('bible-students.edit');
+    Route::put('/bible-students/{id}', [BibleStudentController::class, 'update'])->name('bible-students.update');
+    Route::delete('/bible-students/{id}', [BibleStudentController::class, 'destroy'])->name('bible-students.destroy');
+
+    Route::get('/bible-studies', [BibleStudyController::class, 'index'])->name('bible-studies.index');
+    Route::get('/bible-studies/create', [BibleStudyController::class, 'create'])->name('bible-studies.create');
+    Route::post('/bible-studies', [BibleStudyController::class, 'store'])->name('bible-studies.store');
+    Route::get('/bible-studies/{id}/edit', [BibleStudyController::class, 'edit'])->name('bible-studies.edit');
+    Route::put('/bible-studies/{id}', [BibleStudyController::class, 'update'])->name('bible-studies.update');
+    Route::delete('/bible-studies/{id}', [BibleStudyController::class, 'destroy'])->name('bible-studies.destroy');
 });
 
 require __DIR__.'/auth.php';

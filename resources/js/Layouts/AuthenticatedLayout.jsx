@@ -32,10 +32,10 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('return-visits.index')} active={route().current('return-visits.index')}>
                                     Return Visits
                                 </NavLink>
-                                <NavLink href={route('bible_studies')} active={route().current('bible_studies')}>
+                                <NavLink href={route('bible-studies.index')} active={route().current('bible-studies.index')}>
                                     Bible Studies
                                 </NavLink>
-                                <NavLink href={route('bible_students')} active={route().current('bible_students')}>
+                                <NavLink href={route('bible-students.index')} active={route().current('bible-students.index')}>
                                     Bible Students
                                 </NavLink>
                             </div>
