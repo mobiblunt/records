@@ -1,6 +1,15 @@
 import { Link, Head } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-export default function Welcome({ auth, laravelVersion, phpVersion }) {
+export default function Welcome({ auth }) {
+    const [monthlyStats, setMonthlyStats] = useState(null);
+    useEffect(() => {
+        axios.get('/api/monthly-report-summary')
+            .then(res => setMonthlyStats(res.data))
+            .catch(() => setMonthlyStats(null));
+    }, []);
+
     return (
         <>
             <Head title="Welcome" />
@@ -25,6 +34,18 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
                         A minimal, modern app to track your field ministry, return visits, and Bible studies.
                     </p>
+                    {monthlyStats && (
+                        <div className="stats shadow bg-base-100 w-full mb-6">
+                            <div className="stat">
+                                <div className="stat-title">Last Month's Report</div>
+                                <div className="stat-value text-primary">{monthlyStats.month}</div>
+                                <div className="stat-desc">Field Hours: <span className="font-bold">{monthlyStats.field_hours}</span></div>
+                                <div className="stat-desc">Return Visits: <span className="font-bold">{monthlyStats.return_visits}</span></div>
+                                <div className="stat-desc">Bible Studies: <span className="font-bold">{monthlyStats.bible_studies}</span></div>
+                                <div className="stat-desc">Bible Students: <span className="font-bold">{monthlyStats.bible_students}</span></div>
+                            </div>
+                        </div>
+                    )}
                     <div className="flex gap-4 w-full justify-center">
                         {auth?.user ? (
                             <Link

@@ -7,6 +7,7 @@ use App\Models\FieldRecord;
 use App\Models\ReturnVisit;
 use App\Models\BibleStudent;
 use App\Models\BibleStudy;
+use App\Models\MonthlyReport;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -101,9 +102,14 @@ class DashController extends Controller
             'monthName' => $now->format('F Y'),
         ];
 
+        $monthlyReports = MonthlyReport::where('user_id', $user->id)
+            ->orderBy('month', 'desc')
+            ->get(['month', 'field_hours', 'return_visits', 'bible_studies', 'bible_students', 'notes']);
+
         return Inertia::render('Dashboard', [
             'auth' => ['user' => $user],
             'analytics' => $analytics,
+            'monthlyReports' => $monthlyReports,
         ]);
     }
 }

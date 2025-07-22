@@ -1,9 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
 
-export default function Dashboard({ auth, analytics }) {
-    // Optionally, you can add animation or loading state here
+export default function Dashboard({ auth, analytics, monthlyReports }) {
+    const reports = Array.isArray(monthlyReports) ? monthlyReports : [];
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -12,6 +12,7 @@ export default function Dashboard({ auth, analytics }) {
             <Head title="Dashboard" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    {/* Main analytics grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <div className="stats shadow bg-base-100">
                             <div className="stat">
@@ -44,6 +45,42 @@ export default function Dashboard({ auth, analytics }) {
                     </div>
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">Welcome! Here is your ministry summary for <span className="font-bold">{analytics.monthName}</span>.</div>
+                    </div>
+                    {/* Monthly report history below analytics grid */}
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-8">
+                        <div className="p-6">
+                            <h3 className="text-lg font-bold mb-4">Monthly Reports History</h3>
+                            {reports.length === 0 ? (
+                                <div className="text-gray-500">No reports found.</div>
+                            ) : (
+                                <div className="overflow-x-auto">
+                                    <table className="table table-sm w-full">
+                                        <thead>
+                                            <tr>
+                                                <th>Month</th>
+                                                <th>Field Hours</th>
+                                                <th>Return Visits</th>
+                                                <th>Bible Studies</th>
+                                                <th>Bible Students</th>
+                                                <th>Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {reports.map(report => (
+                                                <tr key={report.month}>
+                                                    <td>{report.month}</td>
+                                                    <td>{report.field_hours}</td>
+                                                    <td>{report.return_visits}</td>
+                                                    <td>{report.bible_studies}</td>
+                                                    <td>{report.bible_students}</td>
+                                                    <td>{report.notes ?? '-'}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

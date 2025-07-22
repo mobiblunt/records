@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('reports:generate-monthly')->monthlyOn(1, '00:10'); // Run at 00:10 on the 1st of each month
     }
 
     /**
