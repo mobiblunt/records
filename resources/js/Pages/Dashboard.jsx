@@ -7,7 +7,7 @@ export default function Dashboard({ auth, analytics, monthlyReports }) {
     const reports = Array.isArray(monthlyReports) ? monthlyReports : [];
     const [modalReport, setModalReport] = useState(null);
     const closeModal = () => setModalReport(null);
-
+    
     return (
         <AuthenticatedLayout
             user={auth.user}

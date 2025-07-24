@@ -104,7 +104,7 @@ class DashController extends Controller
 
         $monthlyReports = MonthlyReport::where('user_id', $user->id)
             ->orderBy('month', 'desc')
-            ->get(['month', 'field_hours', 'return_visits', 'bible_studies', 'bible_students', 'notes']);
+            ->get(['month', 'field_hours', 'return_visits', 'bible_studies', 'placements', 'notes']);
 
         return Inertia::render('Dashboard', [
             'auth' => ['user' => $user],
