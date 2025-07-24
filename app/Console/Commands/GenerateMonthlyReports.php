@@ -27,6 +27,9 @@ class GenerateMonthlyReports extends Command
             $field_hours = FieldRecord::where('user_id', $user->id)
                 ->whereBetween('date', [$monthStart, $monthEnd])
                 ->sum('hours');
+            $placements = FieldRecord::where('user_id', $user->id)
+                ->whereBetween('date', [$monthStart, $monthEnd])
+                ->sum('placements');
             $return_visits = ReturnVisit::where('user_id', $user->id)
                 ->whereBetween('last_visit_date', [$monthStart, $monthEnd])
                 ->count();
@@ -43,6 +46,7 @@ class GenerateMonthlyReports extends Command
                     'return_visits' => $return_visits,
                     'bible_studies' => $bible_studies,
                     'bible_students' => $bible_students,
+                    'placements' => $placements,
                 ]
             );
         }

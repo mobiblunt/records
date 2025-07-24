@@ -60,6 +60,7 @@ class ReturnVisitController extends Controller
             'visit_count' => 'nullable|integer',
             'preferred_days' => 'nullable|string',
             'status' => 'nullable|string',
+            'added_to_bible_student' => 'boolean', // allow update
         ]);
         $returnVisit->update($validated);
         return redirect()->route('return-visits.index')->with('success', 'Return visit updated successfully.');

@@ -26,6 +26,9 @@ export default function Create({ auth }) {
         <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">New Return Visit</h2>}>
             <Head title="Create Return Visit" />
             <div className="max-w-xl mx-auto mt-2 p-6 bg-white rounded shadow">
+                <div className="flex justify-between items-center mb-4">
+                    <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
+                </div>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block mb-1">Name</label>

@@ -12,7 +12,7 @@ class MonthlyReportController extends Controller
         $userId = Auth::id();
         $reports = MonthlyReport::where('user_id', $userId)
             ->orderBy('month', 'desc')
-            ->get(['month', 'field_hours', 'return_visits', 'bible_studies', 'bible_students', 'notes']);
+            ->get(['month', 'field_hours', 'return_visits', 'bible_studies', 'placements', 'notes']);
         return $reports;
     }
 }

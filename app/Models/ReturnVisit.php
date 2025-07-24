@@ -11,6 +11,10 @@ class ReturnVisit extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'added_to_bible_student' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

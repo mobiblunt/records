@@ -28,7 +28,7 @@ const Index = ({ bibleStudies, auth }) => {
             <Head title="My Bible Studies" />
             <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold"></h1>
+                    <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
                     <Link href={route('bible-studies.create')} className="btn btn-success px-4 py-2 rounded ">+ New Bible Study</Link>
                 </div>
                 <table className="table min-w-full bg-white border border-gray-200">

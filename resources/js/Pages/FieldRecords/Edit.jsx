@@ -1,6 +1,6 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 
 export default function Edit({ fieldRecord, auth }) {
     const { data, setData, put, processing, errors } = useForm({
@@ -19,6 +19,9 @@ export default function Edit({ fieldRecord, auth }) {
         <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Field Record</h2>}>
             <Head title="Edit Field Record" />
             <div className="max-w-xl mx-auto mt-2 p-6 bg-white rounded shadow">
+                <div className="flex justify-between items-center mb-4">
+                    <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
+                </div>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block mb-1">Date</label>

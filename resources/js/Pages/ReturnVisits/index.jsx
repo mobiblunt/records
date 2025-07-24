@@ -23,6 +23,38 @@ const index = ({ returnVisits, auth }) => {
             setShowModal(false);
             setSelectedVisit(null);
         };
+
+        const handleAddToBibleStudent = () => {
+            if (!selectedVisit) return;
+            router.post(route('bible-students.store'), {
+                name: selectedVisit.name,
+                address: selectedVisit.address,
+                mobile: selectedVisit.mobile,
+                preferred_days: selectedVisit.preferred_days,
+                notes: selectedVisit.notes,
+                // Add more fields if needed
+            }, {
+                onSuccess: () => {
+                    // Mark this ReturnVisit as added to Bible Student
+                    router.put(route('return-visits.update', selectedVisit.id), {
+                        ...selectedVisit,
+                        added_to_bible_student: true,
+                    }, {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            toast.success('Added to Bible Students!');
+                            closeModal();
+                        },
+                        onError: () => {
+                            toast.error('Failed to update Return Visit.');
+                        }
+                    });
+                },
+                onError: () => {
+                    toast.error('Failed to add to Bible Students.');
+                }
+            });
+        };
   return (
     <AuthenticatedLayout
                 user={auth.user}
@@ -31,7 +63,7 @@ const index = ({ returnVisits, auth }) => {
                 <Head title="My Return Visits" />
                 <div className="p-6">
                                 <div className="flex justify-between items-center mb-4">
-                                    <h1 className="text-2xl font-bold"></h1>
+                                    <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
                                     <Link href={route('return-visits.create')} className="btn btn-success px-4 py-2 rounded ">+ New Return Visit</Link>
                                 </div>
                                 <table className="table table-sm min-w-full bg-white border border-gray-200">
@@ -114,8 +146,11 @@ const index = ({ returnVisits, auth }) => {
                 <div><span className="font-semibold">Active:</span> {selectedVisit.is_active ? 'Yes' : 'No'}</div>
                 <div className="col-span-2"><span className="font-semibold">Notes:</span> {selectedVisit.notes ?? '-'}</div>
             </div>
-            <div className="mt-6 text-right">
+            <div className="mt-6 flex justify-between">
                 <button className="btn btn-primary" onClick={closeModal}>Close</button>
+                {selectedVisit.added_to_bible_student !== true && (
+                    <button className="btn btn-success" onClick={handleAddToBibleStudent}>Add to Bible Student</button>
+                )}
             </div>
         </div>
     </div>
