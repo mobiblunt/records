@@ -2,6 +2,7 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { toast } from 'react-toastify';
+import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from "@/Components/ui/table";
 
 const Index = ({ bibleStudies, auth }) => {
     const { flash } = usePage().props;
@@ -32,51 +33,51 @@ const Index = ({ bibleStudies, auth }) => {
                     <Link href={route('bible-studies.create')} className="btn btn-success px-4 py-2 rounded ">+ New Bible Study</Link>
                 </div>
                 <div className="overflow-x-auto">
-                <table className="table min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr className='text-red-600'>
-                            <th className="py-2 px-4 border-b">Name</th>
-                            <th className="py-2 px-4 border-b">Date</th>
-                            <th className="py-2 px-4 border-b">Publication</th>
-                            <th className="py-2 px-4 border-b">Notes</th>
-                            <th className="py-2 px-4 border-b text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bibleStudies.length === 0 ? (
-                            <tr>
-                                <td colSpan="5" className="text-center py-4">No records found.</td>
-                            </tr>
-                        ) : (
-                            bibleStudies.map(study => (
-                                <tr key={study.id}
-                                    className="hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => handleView(study)}
-                                >
-                                    <td className="py-2 px-4 border-b">{study.name}</td>
-                                    <td className="py-2 px-4 border-b">{study.date}</td>
-                                    <td className="py-2 px-4 border-b">{study.publication}</td>
-                                    <td className="py-2 px-4 border-b">{study.notes ?? '-'}</td>
-                                    <td className="py-2 px-4 border-b text-right">
-                                        <Link href={route('bible-studies.edit', study.id)} className="btn btn-outline btn-primary mr-2" onClick={e => e.stopPropagation()}>Edit</Link>
-                                        <button
-                                            type="button"
-                                            onClick={e => {
-                                                e.stopPropagation();
-                                                if (confirm('Are you sure you want to delete this record?')) {
-                                                    router.delete(route('bible-studies.destroy', study.id));
-                                                }
-                                            }}
-                                            className="btn btn-outline btn-error"
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
+                    <Table className="min-w-full bg-white border border-gray-200">
+                        <TableHeader>
+                            <TableRow className='text-red-600'>
+                                <TableHead className="py-2 px-4 border-b">Name</TableHead>
+                                <TableHead className="py-2 px-4 border-b">Date</TableHead>
+                                <TableHead className="py-2 px-4 border-b">Publication</TableHead>
+                                <TableHead className="py-2 px-4 border-b">Notes</TableHead>
+                                <TableHead className="py-2 px-4 border-b text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {bibleStudies.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="text-center py-4">No records found.</TableCell>
+                                </TableRow>
+                            ) : (
+                                bibleStudies.map(study => (
+                                    <TableRow key={study.id}
+                                        className="hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => handleView(study)}
+                                    >
+                                        <TableCell className="py-2 px-4 border-b">{study.name}</TableCell>
+                                        <TableCell className="py-2 px-4 border-b">{study.date}</TableCell>
+                                        <TableCell className="py-2 px-4 border-b">{study.publication}</TableCell>
+                                        <TableCell className=" py-2 px-4 border-b">{study.notes ?? '-'}</TableCell>
+                                        <TableCell className="py-2 px-4 border-b text-right">
+                                            <Link href={route('bible-studies.edit', study.id)} className="btn btn-outline btn-primary mr-2 mb-2 md:mb-0 btn-sm md:btn-md" onClick={e => e.stopPropagation()}>Edit</Link>
+                                            <button
+                                                type="button"
+                                                onClick={e => {
+                                                    e.stopPropagation();
+                                                    if (confirm('Are you sure you want to delete this record?')) {
+                                                        router.delete(route('bible-studies.destroy', study.id));
+                                                    }
+                                                }}
+                                                className="btn btn-outline btn-error btn-sm md:btn-md"
+                                            >
+                                                Delete
+                                            </button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
 

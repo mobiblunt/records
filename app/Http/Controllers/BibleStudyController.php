@@ -7,6 +7,7 @@ use App\Models\BibleStudy;
 use App\Models\BibleStudent;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BibleStudyController extends Controller
 {
@@ -34,7 +35,13 @@ class BibleStudyController extends Controller
             'notes' => 'nullable|string',
         ]);
         $validated['user_id'] = Auth::id();
+
+        DB::statement('PRAGMA foreign_keys=OFF;');
+
+
         BibleStudy::create($validated);
+
+        DB::statement('PRAGMA foreign_keys=ON;');
         return redirect()->route('bible-studies.index')->with('success', 'Bible study created successfully.');
     }
 

@@ -14,7 +14,7 @@ export default function Dashboard({ auth, analytics, monthlyReports }) {
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
         >
             <Head title="Dashboard" />
-            <div className="py-12">
+            <div className="md:py-12 py-6 md:px-0 px-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {/* Main analytics grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

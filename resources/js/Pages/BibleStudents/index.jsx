@@ -67,7 +67,7 @@ const Index = ({ bibleStudents, auth }) => {
                                     <td className="py-2 px-4 border-b">{student.is_active ? 'Yes' : 'No'}</td>
                                     <td className="py-2 px-4 border-b">{student.notes ?? '-'}</td>
                                     <td className="py-2 px-4 border-b text-right">
-                                        <Link href={route('bible-students.edit', student.id)} className="btn btn-outline btn-primary mr-2" onClick={e => e.stopPropagation()}>Edit</Link>
+                                        <Link href={route('bible-students.edit', student.id)} className="btn btn-outline btn-primary mr-2 mb-2 md:mb-0 btn-sm md:btn-md" onClick={e => e.stopPropagation()}>Edit</Link>
                                         <button
                                             type="button"
                                             onClick={e => {
@@ -76,7 +76,7 @@ const Index = ({ bibleStudents, auth }) => {
                                                     router.delete(route('bible-students.destroy', student.id));
                                                 }
                                             }}
-                                            className="btn btn-outline btn-error"
+                                            className="btn btn-outline btn-error btn-sm md:btn-md"
                                         >
                                             Delete
                                         </button>

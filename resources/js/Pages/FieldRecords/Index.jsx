@@ -2,6 +2,7 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { toast } from 'react-toastify';
+import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from "@/Components/ui/table";
 
 
 export default function Index({ fieldRecords, auth }) {
@@ -39,51 +40,51 @@ export default function Index({ fieldRecords, auth }) {
                     <Link href={route('field-records.create')} className="btn btn-success px-4 py-2 rounded ">+ New Field Record</Link>
                 </div>
                 <div className="overflow-x-auto">
-                <table className="table table-lg min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr className='text-red-600'>
-                            <th className="py-2 px-4 border-b">Date</th>
-                            <th className="py-2 px-4 border-b">Hours</th>
-                            <th className="py-2 px-4 border-b">Bible Studies</th>
-                            <th className="py-2 px-4 border-b">Placements</th>
-                            <th className="py-2 px-4 border-b text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {fieldRecords.length === 0 ? (
-                            <tr>
-                                <td colSpan="5" className="text-center py-4">No records found.</td>
-                            </tr>
-                        ) : (
-                            fieldRecords.map(record => (
-                                <tr key={record.id}
-                                    className="hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => handleView(record)}
-                                >
-                                    <td className="py-2 px-4 border-b">{record.date}</td>
-                                    <td className="py-2 px-4 border-b">{record.hours}</td>
-                                    <td className="py-2 px-4 border-b">{record.bible_studies ?? '-'}</td>
-                                    <td className="py-2 px-4 border-b">{record.placements ?? '-'}</td>
-                                    <td className="py-2 px-4 border-b text-right">
-                                        <Link href={route('field-records.edit', record.id)} className="btn btn-outline btn-primary mr-2 btn-sm md:btn-md" onClick={e => e.stopPropagation()}>Edit</Link>
-                                        <button
-                                            type="button"
-                                            onClick={e => {
-                                                e.stopPropagation();
-                                                if (confirm('Are you sure you want to delete this record?')) {
-                                                    router.delete(route('field-records.destroy', record.id));
-                                                }
-                                            }}
-                                            className="btn btn-outline btn-error btn-sm md:btn-md"
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
+                    <Table className="min-w-full bg-white border border-gray-200">
+                        <TableHeader>
+                            <TableRow className='text-red-600'>
+                                <TableHead className="py-2 px-4 border-b">Date</TableHead>
+                                <TableHead className="py-2 px-4 border-b">Hours</TableHead>
+                                <TableHead className="py-2 px-4 border-b">Bible Studies</TableHead>
+                                <TableHead className="py-2 px-4 border-b">Placements</TableHead>
+                                <TableHead className="py-2 px-4 border-b text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {fieldRecords.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="text-center py-4">No records found.</TableCell>
+                                </TableRow>
+                            ) : (
+                                fieldRecords.map(record => (
+                                    <TableRow key={record.id}
+                                        className="hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => handleView(record)}
+                                    >
+                                        <TableCell className="py-2 px-4 border-b">{record.date}</TableCell>
+                                        <TableCell className="py-2 px-4 border-b">{record.hours}</TableCell>
+                                        <TableCell className="py-2 px-4 border-b">{record.bible_studies ?? '-'}</TableCell>
+                                        <TableCell className="py-2 px-4 border-b">{record.placements ?? '-'}</TableCell>
+                                        <TableCell className="py-2 px-4 border-b text-right">
+                                            <Link href={route('field-records.edit', record.id)} className="btn btn-outline btn-primary mr-2 mb-2 md:mb-0 btn-sm md:btn-md" onClick={e => e.stopPropagation()}>Edit</Link>
+                                            <button
+                                                type="button"
+                                                onClick={e => {
+                                                    e.stopPropagation();
+                                                    if (confirm('Are you sure you want to delete this record?')) {
+                                                        router.delete(route('field-records.destroy', record.id));
+                                                    }
+                                                }}
+                                                className="btn btn-outline btn-error btn-sm md:btn-md"
+                                            >
+                                                Delete
+                                            </button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
 

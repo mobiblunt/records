@@ -5,7 +5,7 @@ import { Head, useForm } from '@inertiajs/react';
 export default function Create({ auth, bibleStudents }) {
     const today = new Date().toISOString().split('T')[0];
     const { data, setData, post, processing, errors } = useForm({
-        bible_student_id: '',
+        bible_student_id: null,
         name: '',
         date: today,
         publication: '',
@@ -14,7 +14,7 @@ export default function Create({ auth, bibleStudents }) {
 
     const handleStudentChange = (e) => {
         const selectedId = e.target.value;
-        setData('bible_student_id', selectedId);
+        setData('bible_student_id', selectedId ? selectedId : null);
         if (selectedId) {
             const selectedStudent = bibleStudents.find(s => String(s.id) === String(selectedId));
             if (selectedStudent) {
