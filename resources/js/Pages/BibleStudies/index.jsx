@@ -31,6 +31,7 @@ const Index = ({ bibleStudies, auth }) => {
                     <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
                     <Link href={route('bible-studies.create')} className="btn btn-success px-4 py-2 rounded ">+ New Bible Study</Link>
                 </div>
+                <div className="overflow-x-auto">
                 <table className="table min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr className='text-red-600'>
@@ -76,6 +77,7 @@ const Index = ({ bibleStudies, auth }) => {
                         )}
                     </tbody>
                 </table>
+                </div>
             </div>
 
             {/* Modal for viewing single item */}

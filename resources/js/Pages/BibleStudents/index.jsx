@@ -32,6 +32,7 @@ const Index = ({ bibleStudents, auth }) => {
                     <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
                     <Link href={route('bible-students.create')} className="btn btn-success px-4 py-2 rounded ">+ New Bible Student</Link>
                 </div>
+                <div className="overflow-x-auto">
                 <table className="table table-sm min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr className='text-red-600'>
@@ -85,6 +86,7 @@ const Index = ({ bibleStudents, auth }) => {
                         )}
                     </tbody>
                 </table>
+                </div>
             </div>
 
             {/* Modal for viewing single item */}

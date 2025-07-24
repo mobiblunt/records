@@ -66,6 +66,7 @@ const index = ({ returnVisits, auth }) => {
                                     <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
                                     <Link href={route('return-visits.create')} className="btn btn-success px-4 py-2 rounded ">+ New Return Visit</Link>
                                 </div>
+                                <div className="overflow-x-auto">
                                 <table className="table table-sm min-w-full bg-white border border-gray-200">
                                     <thead>
                                         <tr>
@@ -125,6 +126,7 @@ const index = ({ returnVisits, auth }) => {
                                         )}
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
 
 {/* Modal for viewing single item */}

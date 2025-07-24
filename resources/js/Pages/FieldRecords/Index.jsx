@@ -38,6 +38,7 @@ export default function Index({ fieldRecords, auth }) {
                     <button className="btn btn-outline" onClick={() => window.history.back()}>&larr; Back</button>
                     <Link href={route('field-records.create')} className="btn btn-success px-4 py-2 rounded ">+ New Field Record</Link>
                 </div>
+                <div className="overflow-x-auto">
                 <table className="table table-lg min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr className='text-red-600'>
@@ -64,7 +65,7 @@ export default function Index({ fieldRecords, auth }) {
                                     <td className="py-2 px-4 border-b">{record.bible_studies ?? '-'}</td>
                                     <td className="py-2 px-4 border-b">{record.placements ?? '-'}</td>
                                     <td className="py-2 px-4 border-b text-right">
-                                        <Link href={route('field-records.edit', record.id)} className="btn btn-outline btn-primary mr-2" onClick={e => e.stopPropagation()}>Edit</Link>
+                                        <Link href={route('field-records.edit', record.id)} className="btn btn-outline btn-primary mr-2 btn-sm md:btn-md" onClick={e => e.stopPropagation()}>Edit</Link>
                                         <button
                                             type="button"
                                             onClick={e => {
@@ -73,7 +74,7 @@ export default function Index({ fieldRecords, auth }) {
                                                     router.delete(route('field-records.destroy', record.id));
                                                 }
                                             }}
-                                            className="btn btn-outline btn-error"
+                                            className="btn btn-outline btn-error btn-sm md:btn-md"
                                         >
                                             Delete
                                         </button>
@@ -83,6 +84,7 @@ export default function Index({ fieldRecords, auth }) {
                         )}
                     </tbody>
                 </table>
+                </div>
             </div>
 
             {/* Modal for viewing single item */}
