@@ -107,7 +107,7 @@ const index = ({ returnVisits, auth }) => {
                                                     <td className="py-2 px-4 border-b">{visit.is_active ? 'Yes' : 'No'}</td>
                                                     <td className="py-2 px-4 border-b">{visit.notes ?? '-'}</td>
                                                     <td className="py-2 px-4 border-b text-right">
-                                                        <Link href={route('return-visits.edit', visit.id)} className="btn btn-outline btn-primary mr-2 mb-2 md:mb-0 btn-sm md:btn-md">Edit</Link>
+                                                        <Link href={route('return-visits.edit', visit.id)} className="btn btn-outline btn-primary mr-2 mb-2  btn-sm md:btn-md">Edit</Link>
                                                         <button
                                                             type="button"
                                                             onClick={e => {
