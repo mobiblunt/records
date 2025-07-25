@@ -28,7 +28,7 @@ class BibleStudyController extends Controller
     public function store(Request $request) {
         $validated = $request->validate([
             'user_id' => 'nullable|integer',
-            'bible_student_id' => 'nullable|integer',
+            'bible_student_id' => 'nullable|integer|exists:bible_students,id',
             'name' => 'required|string',
             'date' => 'required|date',
             'publication' => 'required|string',
@@ -36,12 +36,12 @@ class BibleStudyController extends Controller
         ]);
         $validated['user_id'] = Auth::id();
 
-        DB::statement('PRAGMA foreign_keys=OFF;');
+        //dd($validated);
 
 
         BibleStudy::create($validated);
 
-        DB::statement('PRAGMA foreign_keys=ON;');
+        
         return redirect()->route('bible-studies.index')->with('success', 'Bible study created successfully.');
     }
 
