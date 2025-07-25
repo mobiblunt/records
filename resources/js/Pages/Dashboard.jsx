@@ -3,11 +3,16 @@ import { Head } from '@inertiajs/react';
 import React, { useState } from 'react';
 import { FaRegClock, FaRedo, FaUserGraduate, FaBookOpen } from 'react-icons/fa';
 
-export default function Dashboard({ auth, analytics, monthlyReports }) {
+export default function Dashboard({ auth, analytics, monthlyReports, upcomingVisitsList = [] }) {
     const reports = Array.isArray(monthlyReports) ? monthlyReports : [];
     const [modalReport, setModalReport] = useState(null);
+    const [showUpcomingModal, setShowUpcomingModal] = useState(false);
     const closeModal = () => setModalReport(null);
-    
+    const handleUpcomingClick = () => {
+        setShowUpcomingModal(true);
+    };
+    const closeUpcomingModal = () => setShowUpcomingModal(false);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -75,6 +80,18 @@ export default function Dashboard({ auth, analytics, monthlyReports }) {
                                 <div className="stat-desc">Active: <span className="font-bold">{analytics.bibleStudents.active}</span></div>
                             </div>
                         </div>
+                        <div className="stats shadow bg-base-100">
+                            <div className="stat">
+                                <div className="stat-title flex items-center gap-2"><FaRegClock /> Upcoming Visits</div>
+                                <div className="stat-value text-primary cursor-pointer hover:underline"
+                                    onClick={handleUpcomingClick}
+                                    title="View Upcoming Visits"
+                                >
+                                    {analytics.upcomingVisits}
+                                </div>
+                                <div className="stat-desc">Scheduled this month</div>
+                            </div>
+                        </div>
                     </div>
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">Welcome! Here is your ministry summary for <span className="font-bold">{analytics.monthName}</span>.</div>
@@ -140,6 +157,49 @@ export default function Dashboard({ auth, analytics, monthlyReports }) {
                             <li><span className="font-semibold">Bible Students:</span> {modalReport.bible_students}</li>
                             <li><span className="font-semibold">Notes:</span> {modalReport.notes ?? '-'}</li>
                         </ul>
+                    </div>
+                </div>
+            )}
+            {showUpcomingModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                    <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+                        <button className="absolute top-2 right-2 btn btn-sm btn-circle btn-ghost" onClick={closeUpcomingModal}>&times;</button>
+                        <h4 className="text-lg font-bold mb-4">Upcoming Visits This Month</h4>
+                        {upcomingVisitsList.length === 0 ? (
+                            <div className="text-gray-500">No upcoming visits or studies scheduled for this month.</div>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <table className="table table-sm w-full">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Address</th>
+                                            <th>Mobile</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {upcomingVisitsList
+                                            .sort((a, b) => new Date(a.date) - new Date(b.date))
+                                            .map((item, idx) => (
+                                                <tr key={item.type + '-' + item.id + '-' + idx}>
+                                                    <td>{item.type}</td>
+                                                    <td>{item.name}</td>
+                                                    <td>{item.date}</td>
+                                                    <td>{item.address ?? '-'}</td>
+                                                    <td>{item.mobile ?? '-'}</td>
+                                                    <td className="line-clamp-4 max-w-xs whitespace-pre-line">{item.notes ?? '-'}</td>
+                                                </tr>
+                                            ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                        <div className="mt-6 text-right">
+                            <button className="btn btn-primary" onClick={closeUpcomingModal}>Close</button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -102,6 +102,41 @@ class DashController extends Controller
             'monthName' => $now->format('F Y'),
         ];
 
+        // Upcoming visits for the current month
+        $upcomingVisitsList = ReturnVisit::where('user_id', $user->id)
+            ->whereNotNull('next_visit_date')
+            ->whereBetween('next_visit_date', [$monthStart->toDateString(), $monthEnd->toDateString()])
+            ->get(['id', 'name', 'next_visit_date', 'address', 'mobile', 'notes']);
+        $upcomingStudiesList = BibleStudent::where('user_id', $user->id)
+            ->whereNotNull('next_study_date')
+            ->whereBetween('next_study_date', [$monthStart->toDateString(), $monthEnd->toDateString()])
+            ->get(['id', 'name', 'next_study_date', 'address', 'mobile', 'notes']);
+        $analytics['upcomingVisits'] = $upcomingVisitsList->count() + $upcomingStudiesList->count();
+        $upcomingCombined = [
+            ...$upcomingVisitsList->map(function($v) {
+                return [
+                    'type' => 'Return Visit',
+                    'id' => $v->id,
+                    'name' => $v->name,
+                    'date' => $v->next_visit_date,
+                    'address' => $v->address,
+                    'mobile' => $v->mobile,
+                    'notes' => $v->notes,
+                ];
+            })->toArray(),
+            ...$upcomingStudiesList->map(function($s) {
+                return [
+                    'type' => 'Bible Student',
+                    'id' => $s->id,
+                    'name' => $s->name,
+                    'date' => $s->next_study_date,
+                    'address' => $s->address,
+                    'mobile' => $s->mobile,
+                    'notes' => $s->notes,
+                ];
+            })->toArray(),
+        ];
+
         $monthlyReports = MonthlyReport::where('user_id', $user->id)
             ->orderBy('month', 'desc')
             ->get(['month', 'field_hours', 'return_visits', 'bible_studies', 'placements', 'notes']);
@@ -110,6 +145,7 @@ class DashController extends Controller
             'auth' => ['user' => $user],
             'analytics' => $analytics,
             'monthlyReports' => $monthlyReports,
+            'upcomingVisitsList' => $upcomingCombined,
         ]);
     }
 }
