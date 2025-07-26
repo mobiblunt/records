@@ -23,7 +23,7 @@ export default function Dashboard({ auth, analytics, monthlyReports, upcomingVis
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {/* Main analytics grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div className="stats shadow bg-base-100">
+                        <div className="stats shadow bg-base-100 bg-white/80 dark:bg-white/90">
                             <div className="stat">
                                 <div className="stat-title flex items-center gap-2"><FaRegClock /> Field Records</div>
                                 <div className="stat-value text-primary cursor-pointer hover:underline"
@@ -37,7 +37,7 @@ export default function Dashboard({ auth, analytics, monthlyReports, upcomingVis
                                 <div className="stat-desc">Hours: <span className="font-bold">{analytics.fieldRecords.hours}</span></div>
                             </div>
                         </div>
-                        <div className="stats shadow bg-base-100">
+                        <div className="stats shadow bg-base-100 bg-white/80 dark:bg-white/90">
                             <div className="stat">
                                 <div className="stat-title flex items-center gap-2"><FaRedo /> Return Visits</div>
                                 <div className="stat-value text-primary cursor-pointer hover:underline"
@@ -52,7 +52,7 @@ export default function Dashboard({ auth, analytics, monthlyReports, upcomingVis
                             </div>
                         </div>
                         
-                        <div className="stats shadow bg-base-100">
+                        <div className="stats shadow bg-base-100 bg-white/80 dark:bg-white/90">
                             <div className="stat">
                                 <div className="stat-title flex items-center gap-2"><FaBookOpen /> Bible Studies</div>
                                 <div className="stat-value text-primary cursor-pointer hover:underline"
@@ -66,7 +66,7 @@ export default function Dashboard({ auth, analytics, monthlyReports, upcomingVis
                                 <div className="stat-desc">This Month</div>
                             </div>
                         </div>
-                        <div className="stats shadow bg-base-100">
+                        <div className="stats shadow bg-base-100 bg-white/80 dark:bg-white/90">
                             <div className="stat">
                                 <div className="stat-title flex items-center gap-2"><FaUserGraduate /> Bible Students</div>
                                 <div className="stat-value text-primary cursor-pointer hover:underline"
@@ -80,7 +80,7 @@ export default function Dashboard({ auth, analytics, monthlyReports, upcomingVis
                                 <div className="stat-desc">Active: <span className="font-bold">{analytics.bibleStudents.active}</span></div>
                             </div>
                         </div>
-                        <div className="stats shadow bg-base-100">
+                        <div className="stats shadow bg-base-100 bg-white/80 dark:bg-white/90">
                             <div className="stat">
                                 <div className="stat-title flex items-center gap-2"><FaRegClock /> Upcoming Visits</div>
                                 <div className="stat-value text-primary cursor-pointer hover:underline"
