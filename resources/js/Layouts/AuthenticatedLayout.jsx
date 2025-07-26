@@ -3,15 +3,32 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
+import { Link, Head } from '@inertiajs/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import usePWA from '@/Hooks/usePWA';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
+    const { showInstallButton, handleInstall, dismissInstall, isIOS, browserInfo } = usePWA();
     return (
         <div className="min-h-screen bg-gray-100">
+            <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="theme-color" content="#000000" />
+                <meta name="description" content="Your app description" />
+                <link rel="manifest" href="/manifest.json" />
+                <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+                <meta name="apple-mobile-web-app-title" content="Your App Name" />
+                
+                {/* iOS specific meta tags */}
+                <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
+                <link rel="apple-touch-startup-image" href="/icons/icon-512x512.png" />
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="apple-touch-fullscreen" content="yes" />
+            </Head>
             <nav className="bg-white border-b border-gray-100">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
@@ -147,6 +164,58 @@ export default function Authenticated({ user, header, children }) {
 
             <main>{children}</main>
             <ToastContainer position="top-right" autoClose={3000} />
+             
+            
+
+            {/* PWA Install Button - iOS Compatible */}
+            {showInstallButton && (
+                <div className="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-lg shadow-lg z-50 max-w-sm">
+                    {isIOS ? (
+                        <>
+                            <div className="flex items-center justify-between mb-2">
+                                <p className="text-sm font-semibold">Install App</p>
+                                <button 
+                                    onClick={dismissInstall}
+                                    className="text-white hover:text-gray-200 text-lg leading-none"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                            {browserInfo.isIOSSafari ? (
+                                <div className="text-xs space-y-1">
+                                    <p className="mb-2">Add to Home Screen:</p>
+                                    <div className="flex items-center space-x-1">
+                                        <span>1. Tap</span>
+                                        <div className="inline-flex items-center justify-center w-6 h-6 bg-white rounded text-blue-500 text-sm">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.50-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+                                            </svg>
+                                        </div>
+                                        <span>Share</span>
+                                    </div>
+                                    <div>2. Scroll and tap "Add to Home Screen"</div>
+                                    <div>3. Tap "Add"</div>
+                                </div>
+                            ) : (
+                                <div className="text-xs space-y-1">
+                                    <p className="mb-2">Chrome iOS doesn't support PWA installation.</p>
+                                    <p>Please use Safari for the best experience.</p>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            <p className="mb-2 text-sm">Install our app for a better experience!</p>
+                            <button
+                                onClick={handleInstall}
+                                className="bg-white text-blue-500 px-4 py-2 rounded font-semibold text-sm w-full"
+                            >
+                                Install App
+                            </button>
+                        </>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
