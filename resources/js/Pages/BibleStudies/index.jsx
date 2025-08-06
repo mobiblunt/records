@@ -3,11 +3,27 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { toast } from 'react-toastify';
 import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from "@/Components/ui/table";
+import { saveDraft, getDrafts } from '../../db';
 
-const Index = ({ bibleStudies, auth }) => {
+const Index = ({ bibleStudies: serverStudies, auth }) => {
     const { flash } = usePage().props;
     const [selectedStudy, setSelectedStudy] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
+    const [bibleStudies, setBibleStudies] = React.useState(serverStudies);
+
+    React.useEffect(() => {
+        if (navigator.onLine) {
+            saveDraft('bibleStudiesList', serverStudies);
+            setBibleStudies(serverStudies);
+        } else {
+            getDrafts('bibleStudiesList').then((drafts) => {
+                if (drafts && drafts.length > 0) {
+                    const latest = drafts.reduce((a, b) => new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b);
+                    setBibleStudies(latest.data);
+                }
+            });
+        }
+    }, [serverStudies]);
 
     React.useEffect(() => {
         if (flash?.success) {

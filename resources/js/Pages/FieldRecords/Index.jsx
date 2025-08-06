@@ -3,19 +3,35 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { toast } from 'react-toastify';
 import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from "@/Components/ui/table";
+import { saveDraft, getDrafts } from '../../db';
 
-
-export default function Index({ fieldRecords, auth }) {
+export default function Index({ fieldRecords: serverRecords, auth }) {
     const { flash } = usePage().props;
     const [selectedRecord, setSelectedRecord] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
+    const [fieldRecords, setFieldRecords] = React.useState(serverRecords);
 
     React.useEffect(() => {
-        
         if (flash?.success) {
             toast.success(flash.success);
         }
     }, [flash?.success]);
+
+    // Load cached field records if offline, otherwise use server records and cache them
+    React.useEffect(() => {
+        if (navigator.onLine) {
+            saveDraft('fieldRecordsList', serverRecords);
+            setFieldRecords(serverRecords);
+        } else {
+            getDrafts('fieldRecordsList').then((drafts) => {
+                if (drafts && drafts.length > 0) {
+                    // Get the most recent draft
+                    const latest = drafts.reduce((a, b) => new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b);
+                    setFieldRecords(latest.data);
+                }
+            });
+        }
+    }, [serverRecords]);
 
     const handleView = (record) => {
         setSelectedRecord(record);
@@ -26,6 +42,13 @@ export default function Index({ fieldRecords, auth }) {
         setShowModal(false);
         setSelectedRecord(null);
     };
+
+    // Persist field records list to IndexedDB for offline viewing
+    React.useEffect(() => {
+        if (navigator.onLine) {
+            saveDraft('fieldRecordsList', fieldRecords);
+        }
+    }, [fieldRecords]);
 
     return (
         <AuthenticatedLayout

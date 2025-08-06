@@ -1,17 +1,36 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaRegClock, FaRedo, FaUserGraduate, FaBookOpen } from 'react-icons/fa';
+import { saveAnalytics, getAnalytics } from '../db';
 
-export default function Dashboard({ auth, analytics, monthlyReports, upcomingVisitsList = [] }) {
+export default function Dashboard({ auth, analytics: serverAnalytics, monthlyReports, upcomingVisitsList = [] }) {
     const reports = Array.isArray(monthlyReports) ? monthlyReports : [];
     const [modalReport, setModalReport] = useState(null);
     const [showUpcomingModal, setShowUpcomingModal] = useState(false);
+    const [analytics, setAnalytics] = useState(serverAnalytics);
     const closeModal = () => setModalReport(null);
     const handleUpcomingClick = () => {
         setShowUpcomingModal(true);
     };
     const closeUpcomingModal = () => setShowUpcomingModal(false);
+
+    // Load cached analytics if offline, and cache analytics on change
+    useEffect(() => {
+        const cacheKey = 'dashboard';
+        if (navigator.onLine) {
+            // Save latest analytics to IndexedDB
+            saveAnalytics(cacheKey, serverAnalytics);
+            setAnalytics(serverAnalytics);
+        } else {
+            // Try to load analytics from IndexedDB if offline
+            getAnalytics(cacheKey).then((cached) => {
+                if (cached && cached.data) {
+                    setAnalytics(cached.data);
+                }
+            });
+        }
+    }, [serverAnalytics]);
 
     return (
         <AuthenticatedLayout

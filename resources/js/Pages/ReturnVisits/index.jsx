@@ -2,8 +2,9 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { toast } from 'react-toastify';
+import { saveDraft, getDrafts } from '../../db';
 
-const index = ({ returnVisits, auth }) => {
+const index = ({ returnVisits: serverVisits, auth }) => {
     const { flash } = usePage().props;
         React.useEffect(() => {
             
@@ -14,6 +15,7 @@ const index = ({ returnVisits, auth }) => {
 
         const [selectedVisit, setSelectedVisit] = React.useState(null);
         const [showModal, setShowModal] = React.useState(false);
+        const [returnVisits, setReturnVisits] = React.useState(serverVisits);
       
         const handleView = (visit) => {
             setSelectedVisit(visit);
@@ -55,6 +57,22 @@ const index = ({ returnVisits, auth }) => {
                 }
             });
         };
+
+    // Load cached return visits if offline, otherwise use server data and cache it
+    React.useEffect(() => {
+        if (navigator.onLine) {
+            saveDraft('returnVisitsList', serverVisits);
+            setReturnVisits(serverVisits);
+        } else {
+            getDrafts('returnVisitsList').then((drafts) => {
+                if (drafts && drafts.length > 0) {
+                    const latest = drafts.reduce((a, b) => new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b);
+                    setReturnVisits(latest.data);
+                }
+            });
+        }
+    }, [serverVisits]);
+
   return (
     <AuthenticatedLayout
                 user={auth.user}

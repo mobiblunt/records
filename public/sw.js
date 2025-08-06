@@ -41,35 +41,31 @@ self.addEventListener('activate', (event) => {
 // Fetch event
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Return cached version or fetch from network
-                if (response) {
-                    return response;
-                }
-                
-                return fetch(event.request).then((response) => {
-                    // Don't cache non-successful responses
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
-                        return response;
+        caches.match(event.request).then((response) => {
+            // If found in cache, return it (for static assets and navigation requests)
+            if (response) {
+                return response;
+            }
+            // Otherwise, try to fetch from network and cache it if successful
+            return fetch(event.request)
+                .then((networkResponse) => {
+                    // Only cache successful, basic (same-origin) responses
+                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                        return networkResponse;
                     }
-
-                    // Clone the response
-                    const responseToCache = response.clone();
-
-                    caches.open(CACHE_NAME)
-                        .then((cache) => {
-                            cache.put(event.request, responseToCache);
-                        });
-
-                    return response;
+                    const responseToCache = networkResponse.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseToCache);
+                    });
+                    return networkResponse;
+                })
+                .catch(() => {
+                    // If offline and request is for a navigation or static asset, return cached index.html or fallback
+                    if (event.request.mode === 'navigate') {
+                        return caches.match('/');
+                    }
+                    // Optionally, handle other asset types (e.g. images) with a fallback
                 });
-            })
-            .catch(() => {
-                // Return offline fallback if available
-                if (event.request.mode === 'navigate') {
-                    return caches.match('/');
-                }
-            })
+        })
     );
 });

@@ -2,17 +2,33 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { toast } from 'react-toastify';
+import { saveDraft, getDrafts } from '../../db';
 
-const Index = ({ bibleStudents, auth }) => {
+const Index = ({ bibleStudents: serverStudents, auth }) => {
     const { flash } = usePage().props;
     const [selectedStudent, setSelectedStudent] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
+    const [bibleStudents, setBibleStudents] = React.useState(serverStudents);
 
     React.useEffect(() => {
         if (flash?.success) {
             toast.success(flash.success);
         }
     }, [flash?.success]);
+
+    React.useEffect(() => {
+        if (navigator.onLine) {
+            saveDraft('bibleStudentsList', serverStudents);
+            setBibleStudents(serverStudents);
+        } else {
+            getDrafts('bibleStudentsList').then((drafts) => {
+                if (drafts && drafts.length > 0) {
+                    const latest = drafts.reduce((a, b) => new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b);
+                    setBibleStudents(latest.data);
+                }
+            });
+        }
+    }, [serverStudents]);
 
     const handleView = (student) => {
         setSelectedStudent(student);
